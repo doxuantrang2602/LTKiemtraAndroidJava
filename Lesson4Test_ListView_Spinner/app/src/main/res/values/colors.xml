@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!-- Pastel -->
+    <color name="pastel_blue">#A7BED3</color>
+    <color name="pastel_green">#C6E2E9</color>
+    <color name="pastel_purple">#D5C6E9</color>
+    <color name="pastel_pink">#E9C6E9</color>
+    <color name="pastel_peach">#EDE7B1</color>
+
+    <!-- Vibrant -->
+    <color name="vibrant_orange">#FF5722</color>
+    <color name="vibrant_blue">#448AFF</color>
+    <color name="vibrant_green">#4CAF50</color>
+    <color name="vibrant_purple">#9C27B0</color>
+    <color name="vibrant_yellow">#FFEB3B</color>
+
+    <!-- Earth Tones -->
+    <color name="earth_brown">#A1887F</color>
+    <color name="earth_green">#81C784</color>
+    <color name="earth_yellow">#DCE775</color>
+    <color name="earth_red">#E57373</color>
+    <color name="earth_blue">#64B5F6</color>
+
+    <!-- Neutrals -->
+    <color name="neutral_dark">#455A64</color>
+    <color name="neutral_light">#CFD8DC</color>
+    <color name="neutral_gray">#B0BEC5</color>
+    <color name="neutral_charcoal">#37474F</color>
+    <color name="neutral_blue_gray">#607D8B</color>
+
+    <!-- Material Design -->
+    <color name="material_indigo">#3F51B5</color>
+    <color name="material_red">#F44336</color>
+    <color name="material_lime">#CDDC39</color>
+    <color name="material_deep_purple">#673AB7</color>
+    <color name="material_amber">#FFC107</color>
+
+</resources>
