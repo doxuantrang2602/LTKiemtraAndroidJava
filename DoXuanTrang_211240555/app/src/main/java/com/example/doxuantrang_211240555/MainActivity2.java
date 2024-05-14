@@ -51,6 +51,8 @@ public class MainActivity2 extends AppCompatActivity {
                 Contact_Trang newPerson = new Contact_Trang(id, name, phone);
                 dbHelper.update(id, newPerson);
                 Toast.makeText(MainActivity2.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity2.this, MainActivity.class);
+                startActivity(intent);
             }
         });
     }

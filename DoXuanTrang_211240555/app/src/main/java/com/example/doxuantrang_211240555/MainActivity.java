@@ -25,9 +25,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.doxuantrang_211240555.broadcast.AlertBroadcastReceiver;
@@ -36,9 +38,12 @@ import com.example.doxuantrang_211240555.contentprovider.ShowMessage;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    Spinner spn_sortName;
     MediaPlayer player;
     EditText edt_search;
     Button btn_showContact, btn_showMessage, btn_showCallLog, btn_play, btn_stop;
@@ -46,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     ListView lv_lstPerson;
     DoXuanTrang_Sqlite dbHelper = new DoXuanTrang_Sqlite(this);
     List<Contact_Trang> arrayListPerson = new ArrayList<>();
+    List<Contact_Trang> originalListPerson = new ArrayList<>();
     AlertBroadcastReceiver broadcastReceiver;
     DoXuanTrang_Adapter adapter;
     @Override
@@ -88,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         dbHelper.insert(new Contact_Trang(5, "Nguyễn Văn D", "055555555"));
         dbHelper.insert(new Contact_Trang(6, "Nguyễn Văn E", "066666666"));
         arrayListPerson.addAll(dbHelper.getAllPerson());
+        originalListPerson.addAll(arrayListPerson);
         adapter.notifyDataSetChanged();
         lv_lstPerson.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -175,6 +182,27 @@ public class MainActivity extends AppCompatActivity {
                 player.stop();
             }
         });
+        spn_sortName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        arrayListPerson.clear();
+                        arrayListPerson.addAll(originalListPerson);
+                        adapter.notifyDataSetChanged();
+                        break;
+                    case 1:
+                        sortByID();
+                        break;
+                    case 2:
+                        sortByName();
+                        break;
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     private void getPermission() {
@@ -220,7 +248,30 @@ public class MainActivity extends AppCompatActivity {
         arrayListPerson.addAll(filterList);
         adapter.notifyDataSetChanged();
     }
-
+    private void sortByID() {
+        Collections.sort(arrayListPerson, new Comparator<Contact_Trang>() {
+            @Override
+            public int compare(Contact_Trang o1, Contact_Trang o2) {
+                return Integer.compare(o1.getId(), o2.getId());
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+    private void sortByName() {
+        Collections.sort(arrayListPerson, new Comparator<Contact_Trang>() {
+            @Override
+            public int compare(Contact_Trang o1, Contact_Trang o2) {
+                String lastName1 = getLastName(o1.getName());
+                String lastName2 = getLastName(o2.getName());
+                return lastName1.compareTo(lastName2);
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+    private String getLastName(String fullName) {
+        String[] parts = fullName.trim().split("\\s+");
+        return parts[parts.length - 1];
+    }
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -277,5 +328,10 @@ public class MainActivity extends AppCompatActivity {
         btn_add = this.findViewById(R.id.btn_add);
         lv_lstPerson = this.findViewById(R.id.lv_lstPerson);
         lv_lstPerson.setAdapter(adapter);
+        spn_sortName = this.findViewById(R.id.spn_sortName);
+        String spinnerOption[] = {"Lựa chọn", "Sắp xếp theo mã", "Sắp xếp theo tên"};
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerOption);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spn_sortName.setAdapter(spinnerAdapter);
     }
 }
