@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,8 +16,10 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CallLog;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -286,9 +289,53 @@ public class MainActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.action_delete){
             confirmDelete(pos);
             return true;
+        } else if (item.getItemId() == R.id.action_search) {
+            searchContact(pos);
+            return true;
         }
         return super.onContextItemSelected(item);
     }
+    private void searchContact(int pos) {
+        String hoTen = arrListThiSinh.get(pos).getHoTen();
+        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+        String[] projection = new String[]{
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.NUMBER
+        };
+        String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ?";
+        String[] selectionArgs = new String[]{"%" + hoTen + "%"};
+        Cursor cursor = getContentResolver().query(uri, projection, selection, selectionArgs, null);
+
+        if (cursor != null) {
+            StringBuilder result = new StringBuilder();
+            while (cursor.moveToNext()) {
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                String number = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                result.append("Họ tên: ").append(name).append(", Số điện thoại: ").append(number).append("\n");
+            }
+            cursor.close();
+
+            if (result.length() > 0) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Thông tin");
+                builder.setMessage(result.toString());
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
+            } else {
+                Toast.makeText(this, "Không tìm thấy contact: " + hoTen, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
     private void confirmDelete(int pos) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Confirm");
