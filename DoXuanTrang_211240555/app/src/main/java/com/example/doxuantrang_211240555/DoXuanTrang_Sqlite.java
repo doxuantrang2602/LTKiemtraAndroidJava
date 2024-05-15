@@ -6,11 +6,13 @@ import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.ContactsContract;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DoXuanTrang_Sqlite extends SQLiteOpenHelper {
     private static final String DBName = "myDB";
@@ -96,7 +98,7 @@ public class DoXuanTrang_Sqlite extends SQLiteOpenHelper {
     }
     public ArrayList<Contact_Trang> getAllPerson(){
         ArrayList<Contact_Trang> lst = new ArrayList<>();
-        String query = "select * from "+TABLE_NAME;
+        String query = "select * from "+TABLE_NAME + " ORDER BY " + NAME + " ASC";
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor != null && cursor.moveToFirst()) {
@@ -120,6 +122,24 @@ public class DoXuanTrang_Sqlite extends SQLiteOpenHelper {
         String query = "select * from "+TABLE_NAME + " where NAME like ?";
         return myDB.rawQuery(query, new String[]{"%" + name + "%"});
     }
+    public Cursor searchContactPhoneNumber(Context mContext, String phone) {
+        String[] projection = new String[] {
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.NUMBER
+        };
+        String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ? OR " +
+                ContactsContract.CommonDataKinds.Phone.NUMBER + " LIKE ?";
+        String[] selectionArgs = new String[]{"%" + phone + "%", "%" + phone + "%"};
+        Cursor cursor = mContext.getContentResolver().query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                projection,
+                selection,
+                selectionArgs,
+                null
+        );
+        return cursor;
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:layout_margin="3dp"
+    app:cardCornerRadius="3dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/tv_soBaoDanh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Số báo danh"
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/tv_hoTen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="Họ tên"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_tongDiem"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_weight="3"
+            android:text="27"
+            android:textSize="18sp"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

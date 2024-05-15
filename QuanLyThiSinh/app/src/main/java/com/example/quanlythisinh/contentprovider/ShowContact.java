@@ -1,4 +1,4 @@
-package com.example.doxuantrang_211240555.contentprovider;
+package com.example.quanlythisinh.contentprovider;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,8 +18,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.doxuantrang_211240555.MainActivity;
-import com.example.doxuantrang_211240555.R;
+import com.example.quanlythisinh.MainActivity;
+import com.example.quanlythisinh.R;
 
 import java.util.ArrayList;
 

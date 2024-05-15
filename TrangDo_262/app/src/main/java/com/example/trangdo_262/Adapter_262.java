@@ -1,4 +1,4 @@
-package com.example.doxuantrang_211240555;
+package com.example.trangdo_262;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,23 +12,23 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-public class DoXuanTrang_Adapter extends ArrayAdapter<Contact_Trang> {
-    public DoXuanTrang_Adapter(@NonNull Context context, int resource, @NonNull List<Contact_Trang> objects) {
+public class Adapter_262 extends ArrayAdapter<Taxi_262> {
+    public Adapter_262(@NonNull Context context, int resource, @NonNull List<Taxi_262> objects) {
         super(context, resource, objects);
     }
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
-        Contact_Trang person = getItem(position);
-        if (person != null){
+        Taxi_262 taxi = getItem(position);
+        if (taxi != null){
             TextView v0, v1, v2;
-            v0 = view.findViewById(R.id.tv_id);
-            v1 = view.findViewById(R.id.tv_name);
-            v2 = view.findViewById(R.id.tv_phone);
-            v0.setText(String.valueOf(person.getId()));
-            v1.setText(person.getName());
-            v2.setText(person.getPhone());
+            v0 = view.findViewById(R.id.tv_soXe);
+            v1 = view.findViewById(R.id.tv_quangDuong);
+            v2 = view.findViewById(R.id.tv_tongTien);
+            v0.setText(taxi.getSoXe());
+            v1.setText(String.valueOf(taxi.getQuangDuong()));
+            v2.setText(String.valueOf(taxi.tongTien()));
         }
         return view;
     }
