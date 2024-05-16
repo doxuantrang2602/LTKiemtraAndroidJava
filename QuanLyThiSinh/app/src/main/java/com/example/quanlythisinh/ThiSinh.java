@@ -1,6 +1,8 @@
 package com.example.quanlythisinh;
 
-public class ThiSinh {
+import java.io.Serializable;
+
+public class ThiSinh implements Serializable {
     private String soBaoDanh;
     private String hoTen;
     private float toan;
@@ -58,6 +60,6 @@ public class ThiSinh {
         return toan + ly + hoa;
     }
     public float diemTB(){
-        return (toan + ly + hoa) / 3;
+        return (toan + ly + hoa) /  3;
     }
 }

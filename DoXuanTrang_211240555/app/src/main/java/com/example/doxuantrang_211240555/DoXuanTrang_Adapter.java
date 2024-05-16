@@ -11,10 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
+import java.util.Locale;
 
 public class DoXuanTrang_Adapter extends ArrayAdapter<Contact_Trang> {
     public DoXuanTrang_Adapter(@NonNull Context context, int resource, @NonNull List<Contact_Trang> objects) {
         super(context, resource, objects);
+    }
+    private String formatTime(float time) {
+        int minutes = (int) time;
+        int seconds = Math.round((time - minutes) * 60);
+        return String.format(Locale.getDefault(), "%d:%02d", minutes, seconds);
     }
     @NonNull
     @Override
@@ -22,13 +28,12 @@ public class DoXuanTrang_Adapter extends ArrayAdapter<Contact_Trang> {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
         Contact_Trang person = getItem(position);
         if (person != null){
-            TextView v0, v1, v2;
-            v0 = view.findViewById(R.id.tv_id);
-            v1 = view.findViewById(R.id.tv_name);
-            v2 = view.findViewById(R.id.tv_phone);
-            v0.setText(String.valueOf(person.getId()));
-            v1.setText(person.getName());
-            v2.setText(person.getPhone());
+            TextView tv_id = view.findViewById(R.id.tv_id);
+            TextView tv_name = view.findViewById(R.id.tv_name);
+            TextView tv_phone = view.findViewById(R.id.tv_phone);
+            tv_id.setText(String.valueOf(person.getId()));
+            tv_name.setText(person.getName());
+            tv_phone.setText(person.getPhone());
         }
         return view;
     }

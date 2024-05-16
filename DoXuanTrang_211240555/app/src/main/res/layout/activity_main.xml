@@ -8,7 +8,8 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <Toolbar
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#3F51B5">
@@ -18,7 +19,7 @@
             android:text="DBMan"
             android:textColor="@color/white"
             android:textSize="25sp"/>
-    </Toolbar>
+    </androidx.appcompat.widget.Toolbar>
     <EditText
         android:id="@+id/edt_search"
         android:layout_width="match_parent"
@@ -27,7 +28,8 @@
     <ListView
         android:id="@+id/lv_lstPerson"
         android:layout_width="match_parent"
-        android:layout_height="380dp"/>
+        android:layout_height="380dp"
+        android:layout_margin="5dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,13 +41,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"/>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <ImageButton
             android:id="@+id/btn_add"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@android:drawable/ic_input_add"
-            android:layout_gravity="right"/>
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/button_round"
+            android:src="@android:drawable/ic_input_add"/>
     </LinearLayout>
 
     <LinearLayout

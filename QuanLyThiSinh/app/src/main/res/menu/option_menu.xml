@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/opt_luaChon"
+        android:title="Sắp xếp theo tên" />
+    <item
+        android:id="@+id/opt_sapXepTangDan"
+        android:title="Sắp xếp tăng dần theo tổng điểm" />
+    <item
+        android:id="@+id/opt_sapXepGiamDan"
+        android:title="Sắp xếp giảm dần theo tổng điểm" />
+    <item
+        android:id="@+id/opt_sapXepSoBaoDanh"
+        android:title="Sắp xếp tăng dần Số báo danh" />
+</menu>

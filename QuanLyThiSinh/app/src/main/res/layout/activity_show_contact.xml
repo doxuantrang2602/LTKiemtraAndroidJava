@@ -59,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="3"
+        android:weightSum="4"
         android:layout_marginTop="20dp">
         <Button
             android:id="@+id/btn_addContact"
@@ -73,6 +73,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Xóa"/>
+        <Button
+            android:id="@+id/btn_updateContact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sửa"/>
         <Button
             android:id="@+id/btn_back1"
             android:layout_width="wrap_content"

@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
@@ -30,6 +31,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer player;
     EditText edt_search;
     Button btn_showContact, btn_showMessage, btn_showCallLog, btn_play, btn_stop;
-    FloatingActionButton btn_add;
+    ImageButton btn_add;
     ListView lv_lstPerson;
     DoXuanTrang_Sqlite dbHelper = new DoXuanTrang_Sqlite(this);
     List<Contact_Trang> arrayListPerson = new ArrayList<>();
@@ -252,6 +254,9 @@ public class MainActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.action_delete){
             confirmDelete(pos);
             return true;
+        }else if (item.getItemId() == R.id.action_search) {
+            searchContact(pos);
+            return true;
         }
         return super.onContextItemSelected(item);
     }
@@ -276,6 +281,44 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.create().show();
     }
+    private void searchContact(int pos) {
+        String hoTen = arrayListPerson.get(pos).getName();
+        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+        String[] projection = new String[]{
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.NUMBER
+        };
+        String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ?";
+        String[] selectionArgs = new String[]{"%" + hoTen + "%"};
+        Cursor cursor = getContentResolver().query(uri, projection, selection, selectionArgs, null);
+
+        if (cursor != null) {
+            StringBuilder result = new StringBuilder();
+            while (cursor.moveToNext()) {
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                String number = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                result.append("Họ tên: ").append(name).append(", Số điện thoại: ").append(number).append("\n");
+            }
+            cursor.close();
+
+            if (result.length() > 0) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Thông tin");
+                builder.setMessage(result.toString());
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
+            } else {
+                Toast.makeText(this, "Không tìm thấy contact: " + hoTen, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
+        }
+    }
     private void filterName(String word) {
         Cursor cursor = dbHelper.searchByName(word);
         ArrayList<Contact_Trang> filterList = new ArrayList<>();
@@ -285,21 +328,6 @@ public class MainActivity extends AppCompatActivity {
                 String name = cursor.getString(1);
                 String phone = cursor.getString(2);
                 filterList.add(new Contact_Trang(id, name, phone));
-            }
-            cursor.close();
-        }
-        arrayListPerson.clear();
-        arrayListPerson.addAll(filterList);
-        adapter.notifyDataSetChanged();
-    }
-    private void filterPhone(String phoneNumber) {
-        ArrayList<Contact_Trang> filterList = new ArrayList<>();
-        Cursor cursor = dbHelper.searchContactPhoneNumber(this, phoneNumber);
-        if(cursor != null){
-            while(cursor.moveToNext()){
-                String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                String phone = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                filterList.add(new Contact_Trang(0, name, phone));
             }
             cursor.close();
         }

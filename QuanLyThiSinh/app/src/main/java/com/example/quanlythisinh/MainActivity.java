@@ -3,6 +3,7 @@ package com.example.quanlythisinh;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -14,6 +15,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -24,6 +26,7 @@ import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +34,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -47,7 +51,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     Spinner spn_sapXep;
-    FloatingActionButton btn_them;
+    ImageButton btn_them;
     Button btn_showContact, btn_showMessage, btn_showCallLog, btn_play, btn_stop;
     EditText edt_search;
     ListView lv_lstThiSinh;
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     SqliteThiSinhDB dbHelper = new SqliteThiSinhDB(this);
     MediaPlayer player;
     AlertBroadcastReceiver broadcastReceiver = new AlertBroadcastReceiver();
+    Toolbar toolbar;
     @Override
     protected void onStart() {
         super.onStart();
@@ -88,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AnhXa();
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getPermission();
         dbHelper = new SqliteThiSinhDB(MainActivity.this, "ThiSinh", null, 1);
         dbHelper.insert(new ThiSinh("MSV001", "Nguyễn Văn B", 9.0f, 8.5f, 8.25f));
@@ -118,6 +125,9 @@ public class MainActivity extends AppCompatActivity {
         lv_lstThiSinh.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                float tongDiem = arrListThiSinh.get(position).tongDiem();
+                int cnt = dbHelper.countThiSinh(tongDiem);
+                Toast.makeText(MainActivity.this, tongDiem+" Đỗ Xuân Tráng "+cnt, Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -208,6 +218,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
     private void getPermission() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) !=
                 PackageManager.PERMISSION_GRANTED){
@@ -247,7 +259,16 @@ public class MainActivity extends AppCompatActivity {
         Collections.sort(arrListThiSinh, new Comparator<ThiSinh>() {
             @Override
             public int compare(ThiSinh o1, ThiSinh o2) {
-                return Float.compare(o1.diemTB(), o2.diemTB());
+                return Float.compare(o2.diemTB(), o1.diemTB());
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+    private void sapXepSoBaoDanh() {
+        Collections.sort(arrListThiSinh, new Comparator<ThiSinh>() {
+            @Override
+            public int compare(ThiSinh o1, ThiSinh o2) {
+                return o1.getSoBaoDanh().compareTo(o2.getSoBaoDanh());
             }
         });
         adapter.notifyDataSetChanged();
@@ -266,6 +287,29 @@ public class MainActivity extends AppCompatActivity {
     private String getLastName(String fullName) {
         String[] parts = fullName.trim().split("\\s+");
         return parts[parts.length - 1];
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.option_menu,menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.opt_luaChon){
+            arrListThiSinh.clear();
+            arrListThiSinh.addAll(originalListThiSinh);
+            adapter.notifyDataSetChanged();
+        }
+        else if (item.getItemId() == R.id.opt_sapXepTangDan){
+            sapXepTongDiem();
+        }
+        else if (item.getItemId() == R.id.opt_sapXepGiamDan){
+            sapXepDiemTB();
+        } else if (item.getItemId() == R.id.opt_sapXepSoBaoDanh){
+            sapXepSoBaoDanh();
+        }
+        return super.onOptionsItemSelected(item);
     }
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -333,9 +377,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
     private void confirmDelete(int pos) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Confirm");
@@ -381,7 +422,7 @@ public class MainActivity extends AppCompatActivity {
         lv_lstThiSinh = this.findViewById(R.id.lv_lstThiSinh);
         lv_lstThiSinh.setAdapter(adapter);
         spn_sapXep = this.findViewById(R.id.spn_sapXep);
-        String spinnerOption[] = {"Lựa chọn", "Sắp xếp tăng dần theo tổng diểm", "Sắp xếp tăng dần theo điểm trung bình"};
+        String spinnerOption[] = {"Lựa chọn", "Sắp xếp tăng dần theo tổng diểm", "Sắp xếp giảm dần theo tổng điểm"};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerOption);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spn_sapXep.setAdapter(spinnerAdapter);

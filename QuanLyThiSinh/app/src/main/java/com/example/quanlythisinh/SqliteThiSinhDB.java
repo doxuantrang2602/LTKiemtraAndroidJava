@@ -128,8 +128,20 @@ public class SqliteThiSinhDB extends SQLiteOpenHelper {
         myDB.rawQuery(query,null);
     }
     public Cursor searchByName(String hoTen){
-        String query = "select * from "+TABLE_NAME + " where HOTEN like ?";
-        return myDB.rawQuery(query, new String[]{"%" + hoTen + "%"});
+        String query = "select * from "+TABLE_NAME + " where HOTEN like ? or SOBAODANH like ?";
+        return myDB.rawQuery(query, new String[]{"%" + hoTen + "%", "%" + hoTen + "%"});
+    }
+    public int countThiSinh(float tongDiem){
+        String query = "select count(*) from "+ TABLE_NAME + " where TOAN+LY+HOA > "+ tongDiem;
+        Cursor cursor = myDB.rawQuery(query, null);
+        if (cursor.moveToFirst()){
+            int count = cursor.getInt(0);
+            cursor.close();
+            return count;
+        } else {
+            cursor.close();
+            return 0;
+        }
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

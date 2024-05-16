@@ -12,6 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#3F51B5">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hóa đơn Taxi"
+            android:textColor="@color/white"
+            android:textSize="25sp"/>
     </Toolbar>
     <EditText
         android:id="@+id/edt_search"

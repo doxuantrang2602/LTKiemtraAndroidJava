@@ -22,13 +22,12 @@ public class ThiSinhAdapter extends ArrayAdapter<ThiSinh> {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
         ThiSinh ts = getItem(position);
         if (ts != null){
-            TextView v0, v1, v2;
-            v0 = view.findViewById(R.id.tv_soBaoDanh);
-            v1 = view.findViewById(R.id.tv_hoTen);
-            v2 = view.findViewById(R.id.tv_tongDiem);
-            v0.setText(ts.getSoBaoDanh());
-            v1.setText(ts.getHoTen());
-            v2.setText(String.valueOf(ts.tongDiem()));
+            TextView tv_soBaoDanh = view.findViewById(R.id.tv_soBaoDanh);
+            TextView tv_hoTen = view.findViewById(R.id.tv_hoTen);
+            TextView tv_tongDiem = view.findViewById(R.id.tv_tongDiem);
+            tv_soBaoDanh.setText(ts.getSoBaoDanh());
+            tv_hoTen.setText(ts.getHoTen());
+            tv_tongDiem.setText(String.valueOf(ts.tongDiem()));
         }
         return view;
     }

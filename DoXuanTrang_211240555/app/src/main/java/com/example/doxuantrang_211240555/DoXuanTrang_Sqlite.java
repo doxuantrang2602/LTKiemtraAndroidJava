@@ -122,24 +122,6 @@ public class DoXuanTrang_Sqlite extends SQLiteOpenHelper {
         String query = "select * from "+TABLE_NAME + " where NAME like ?";
         return myDB.rawQuery(query, new String[]{"%" + name + "%"});
     }
-    public Cursor searchContactPhoneNumber(Context mContext, String phone) {
-        String[] projection = new String[] {
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                ContactsContract.CommonDataKinds.Phone.NUMBER
-        };
-        String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ? OR " +
-                ContactsContract.CommonDataKinds.Phone.NUMBER + " LIKE ?";
-        String[] selectionArgs = new String[]{"%" + phone + "%", "%" + phone + "%"};
-        Cursor cursor = mContext.getContentResolver().query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                projection,
-                selection,
-                selectionArgs,
-                null
-        );
-        return cursor;
-    }
-
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 

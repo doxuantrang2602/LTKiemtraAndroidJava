@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class ShowContact extends AppCompatActivity {
     EditText edt_Name, edt_Phone;
-    Button btn_addContact, btn_deleteContact, btn_back1;
+    Button btn_addContact, btn_deleteContact, btn_updateContact, btn_back1;
     ListView lv_contact;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +72,18 @@ public class ShowContact extends AppCompatActivity {
                     }
                 } else {
                     Toast.makeText(ShowContact.this, "Vui lòng nhập số điện thoại", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        btn_updateContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = edt_Name.getText().toString().trim();
+                String phone = edt_Phone.getText().toString().trim();
+                if (!name.isEmpty() && !phone.isEmpty()) {
+                    updateContact(name, phone);
+                } else {
+                    Toast.makeText(ShowContact.this, "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -174,13 +186,51 @@ public class ShowContact extends AppCompatActivity {
         values.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);
         cr.insert(ContactsContract.Data.CONTENT_URI, values);
     }
+    private void updateContact(String name, String phone) {
+        ContentResolver contentResolver = getContentResolver();
 
+        // Find the contact ID by the phone number
+        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+        String[] projection = new String[]{ContactsContract.CommonDataKinds.Phone.CONTACT_ID};
+        String selection = ContactsContract.CommonDataKinds.Phone.NUMBER + " = ?";
+        String[] selectionArgs = new String[]{phone};
+
+        Cursor cursor = contentResolver.query(uri, projection, selection, selectionArgs, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
+            cursor.close();
+
+            // Update contact name
+            ContentValues values = new ContentValues();
+            String where = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
+            String[] nameArgs = new String[]{contactId, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE};
+
+            values.put(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, name);
+            contentResolver.update(ContactsContract.Data.CONTENT_URI, values, where, nameArgs);
+
+            // Update contact phone number
+            values.clear();
+            String[] phoneArgs = new String[]{contactId, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE};
+
+            values.put(ContactsContract.CommonDataKinds.Phone.NUMBER, phone);
+            contentResolver.update(ContactsContract.Data.CONTENT_URI, values, where, phoneArgs);
+
+            Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+            showContact2();
+        } else {
+            Toast.makeText(this, "Không tìm thấy contact để cập nhật", Toast.LENGTH_SHORT).show();
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
     private void AnhXa(){
         edt_Name = this.findViewById(R.id.edt_Name);
         edt_Phone = this.findViewById(R.id.edt_Phone);
         btn_back1 = this.findViewById(R.id.btn_back1);
         btn_addContact = this.findViewById(R.id.btn_addContact);
         btn_deleteContact = this.findViewById(R.id.btn_deleteContact);
+        btn_updateContact = this.findViewById(R.id.btn_updateContact);
         lv_contact = this.findViewById(R.id.lv_conTact);
     }
 }

@@ -8,7 +8,8 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <Toolbar
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#3F51B5">
@@ -17,13 +18,13 @@
             android:layout_height="wrap_content"
             android:text="Quản Lý Thí Sinh"
             android:textColor="@color/white"
-            android:textSize="25sp"/>
-    </Toolbar>
+            android:textSize="25sp" />
+    </androidx.appcompat.widget.Toolbar>
     <EditText
         android:id="@+id/edt_search"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:hint="Search" />
+        android:hint="Search"/>
     <ListView
         android:id="@+id/lv_lstThiSinh"
         android:layout_width="match_parent"
@@ -39,13 +40,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"/>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <ImageButton
             android:id="@+id/btn_them"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@android:drawable/ic_input_add"
-            android:layout_gravity="right"/>
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/button_round"
+            android:src="@android:drawable/ic_input_add"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
