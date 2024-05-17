@@ -14,7 +14,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Quản Lý Thí Sinh"
             android:textColor="@color/white"
             android:textSize="25sp"/>
     </androidx.appcompat.widget.Toolbar>
@@ -22,19 +21,48 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Số báo danh:"
+        android:text="Ngày tháng:"
         android:textSize="24sp"/>
-
     <EditText
-        android:id="@+id/edt_soBaoDanh"
+        android:id="@+id/edt_ngayThang"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đến/Đi"
+            android:textSize="20sp"/>
+    <RadioGroup
+        android:id="@+id/rdGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/rdb_denTu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Đến từ"
+            android:textSize="18sp" />
+        <RadioButton
+            android:id="@+id/rdb_diDen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Đi tới"
+            android:textSize="18sp" />
+    </RadioGroup>
+    </LinearLayout>
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Họ tên:"
+        android:text="Tên người:"
         android:textSize="24sp"/>
 
     <EditText
@@ -47,33 +75,22 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Điểm toán:"
+        android:text="Nội dung:"
         android:textSize="24sp"/>
 
     <EditText
-        android:id="@+id/edt_diemToan"
+        android:id="@+id/edt_noiDung"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Điểm lý:"
+        android:text="Số tiền: "
         android:textSize="24sp"/>
 
     <EditText
-        android:id="@+id/edt_diemLy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Điểm hóa:"
-        android:textSize="24sp"/>
-
-    <EditText
-        android:id="@+id/edt_diemHoa"
+        android:id="@+id/edt_soTien"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"/>
@@ -82,19 +99,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
-        android:weightSum="3">
+        android:weightSum="2">
         <Button
             android:id="@+id/btn_them2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Thêm" />
-        <Button
-            android:id="@+id/btn_Sua"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Sửa" />
         <Button
             android:id="@+id/btn_quayLai"
             android:layout_width="match_parent"
